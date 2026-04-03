@@ -1,0 +1,247 @@
+# Quick Start Guide
+
+This file is your entry point. Read this first, then follow the sections below.
+
+## Overview
+
+You have a **48-hour assessment window** with **~4 hours of active work** to build an MVP desktop application for monitoring power substation telemetry data.
+
+**Goal:** Demonstrate strong problem-solving, clean architecture, and thoughtful UI design.
+
+**Submission:** Public GitHub repo with video walkthrough linked in README.
+
+---
+
+## What You Have
+
+✅ **ASSESSMENT_PLAN.md** ← Start here for the complete strategy
+  - MVP feature prioritization (why you should build what)
+  - Data model design with Python code
+  - Project structure template
+  - Git workflow requirements
+  - 4-hour timeline breakdown
+  - README.md template with all 5 required sections
+
+✅ **models.py** ← The core data model
+  - Ready to use; clean dataclasses with validation
+  - TelemetryReading, Substation, Facility
+  - All business logic for status computation
+  - Documented with docstrings
+
+✅ **data_generator.py** ← Sample data for testing
+  - Creates realistic telemetry data (5 substations)
+  - Saves/loads from JSON
+  - Ready to integrate into your UI
+
+✅ **tests_models.py** ← Unit test template
+  - Examples of how to test the data model
+  - Run with: `pytest tests_models.py -v`
+
+✅ **GIT_WORKFLOW.md** ← GitHub branching strategy
+  - Step-by-step PR workflow
+  - Conventional commit format
+  - Examples and troubleshooting
+
+✅ **requirements.txt** ← Python dependencies
+  - PyQt5 for desktop UI
+  - matplotlib for charts
+  - pandas for data handling
+
+✅ **.gitignore** ← Pre-configured
+
+---
+
+## Your Action Plan (4 Hours)
+
+### Phase 1: Setup (20 min)
+1. Create GitHub repository
+2. Initialize git locally: `git init`
+3. Create main branch and push: `git checkout -b main && git push -u origin main`
+4. Create first feature branch: `git checkout -b feature/initial-setup`
+
+### Phase 2: Data Model (40 min)
+✅ Already done! Use `models.py` as-is
+- Review the data model design
+- Understand TelemetryReading, Substation, Facility classes
+- Run: `python data_generator.py` to test it works
+
+### Phase 3: Data Loading (30 min)
+- Create `src/data_loader.py` to parse JSON → Facility object
+- Or just use `data_generator.load_facility_from_json()` directly
+
+### Phase 4: UI - Alert Dashboard (90 min)
+**This is your MVP core feature**
+- Create PyQt5 main window (`src/ui/main_window.py`)
+- Display all substations in a table/grid, sorted by status
+- Color code rows: red (critical), yellow (warning), green (OK)
+- Show latest voltage, temperature, load, status for each device
+
+### Phase 5: UI - Detail View (40 min)
+- Create detail widget for single substation
+- Display matplotlib chart with 24-hour trends
+- Show voltage, temperature, load over time
+- Make it drill-down from alert dashboard (double-click a row)
+
+### Phase 6: Testing + Polish (20 min)
+- Run `pytest` to verify tests pass
+- Test end-to-end: `python main.py`
+- Ensure app launches without errors
+- Basic styling (fonts, colors)
+
+### Phase 7: Video + Documentation
+- Record 2-3 min screen walkthrough
+- Update README with all 5 sections (from ASSESSMENT_PLAN.md template)
+- Final git commit and push
+
+---
+
+## Key Decision: What to Prioritize
+
+**YES - Build:**
+- Alert dashboard (shows what devices are failing)
+- Drill-down detail view (shows trends for a device)
+- Time-series chart (shows last 24 hours)
+- Status computation logic (what makes something critical?)
+- Clean, testable code
+- Good README with architectural decisions
+
+**NO - Don't build (not enough time):**
+- Real log file parsing (use sample JSON instead)
+- Database/persistence layer (JSON files are fine)
+- Historical alerts log
+- User authentication
+- Advanced features
+
+**Why?** The assessment scores you on:
+1. **Problem-solving** ← Do you prioritize the right features?
+2. **Code architecture** ← Are models separate from UI? Easy to test?
+3. **UI design** ← Is it usable for scanning hundreds of devices?
+4. **Communication** ← Does your README explain your thinking?
+5. **Execution** ← Did you demonstrate all 5 features working?
+
+You're not judged on the number of features. You're judged on **how well you solved the core problem with clean code**.
+
+---
+
+## Files & Structure You'll Create
+
+```
+assessment/
+├── README.md                    ← Updated with 5 required sections
+├── main.py                      ← Entry point (launch app)
+├── models.py                    ← ✅ Already provided
+├── data_generator.py            ← ✅ Already provided
+├── requirements.txt             ← ✅ Already provided
+├── GIT_WORKFLOW.md             ← ✅ Already provided
+├── ASSESSMENT_PLAN.md           ← ✅ Already provided (read first!)
+├── .gitignore                   ← ✅ Already provided
+├── data/
+│   └── sample_telemetry.json    ← Generated by data_generator.py
+├── src/
+│   ├── __init__.py
+│   ├── data_loader.py           ← Parse JSON → objects
+│   ├── ui/
+│   │   ├── __init__.py
+│   │   ├── main_window.py       ← PyQt5 main window
+│   │   ├── dashboard.py         ← Alert dashboard widget
+│   │   └── detail_view.py       ← Drill-down detail view
+│   └── utils/
+│       ├── validators.py        ← Input validation
+│       └── time_helpers.py      ← DateTime utilities
+└── tests/
+    ├── test_models.py           ← ✅ Already provided
+    └── test_ui.py               ← Basic UI tests (optional)
+```
+
+---
+
+## Testing the Foundation
+
+1. **Verify data model works:**
+   ```bash
+   python data_generator.py
+   ```
+   Should print facility summary with 5 substations (1 critical, 1-2 warnings, rest OK)
+
+2. **Run unit tests:**
+   ```bash
+   pytest tests_models.py -v
+   ```
+   All tests should pass (covers all status conditions)
+
+3. **Test JSON serialization:**
+   ```python
+   from data_generator import load_facility_from_json
+   facility = load_facility_from_json("sample_telemetry.json")
+   print(facility)  # Should show all substations loaded
+   ```
+
+---
+
+## GitHub Submission Checklist
+
+- [ ] Public repository created
+- [ ] Main branch is default
+- [ ] All work on feature branches (never direct commits to main)
+- [ ] At least 5-10 commits with conventional format
+- [ ] README.md has all 5 sections including video link
+- [ ] Git history shows clear progression
+- [ ] README explains data model choices
+- [ ] README discusses a design trade-off you're uncertain about
+- [ ] Video walkthrough (2-5 min) showing app working
+- [ ] Final code is clean and well-commented
+
+---
+
+## Common Pitfalls to Avoid
+
+❌ **Don't:**
+- Try to parse real log files (too complex for 4 hours)
+- Build a database (sample JSON is sufficient)
+- Over-engineer the UI (simple grid + chart = enough)
+- Skip testing (models.py design is specifically testable)
+- Forget the video (submission requirement!)
+- Skip the critical reflection in README (shows self-awareness)
+
+✅ **Do:**
+- Start with Git setup immediately
+- Build incrementally (model → loading → UI)
+- Use sample data for demos
+- Write tests as you go
+- Keep commits atomic and well-labeled
+- Test your app at the end before recording
+
+---
+
+## Next Steps
+
+1. **Read ASSESSMENT_PLAN.md completely** (sections 1-5)
+2. **Create GitHub repository** and push initial files
+3. **Follow GIT_WORKFLOW.md** to create branches properly
+4. **Run data_generator.py** to verify setup
+5. **Start Phase 1 timer** and build the UI phases
+6. **Record video walkthrough** after Phase 6
+7. **Update README** with all 5 sections
+8. **Final push to main** via PR
+
+---
+
+## Questions Before You Start?
+
+Review:
+- ASSESSMENT_PLAN.md for design & architecture questions
+- GIT_WORKFLOW.md for git/GitHub questions
+- models.py docstrings for data model questions
+- tests_models.py for testing examples
+
+You've got this! 💪
+
+---
+
+**Last Note:** The interviewers WANT you to succeed. They're looking for someone who:
+- Thinks strategically about MVP scope
+- Writes clean, tested code
+- Communicates design decisions clearly
+- Shows humility about trade-offs
+
+This assessment guide sets you up to demonstrate all of those. Now execute! 🚀
